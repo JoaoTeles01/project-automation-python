@@ -18,11 +18,11 @@ user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTM
 browser.execute_cdp_cmd("Network.setUserAgentOverride", {"userAgent": user_agent})
 browser.execute_script("Object.defineProperty(navigator, 'webdriver', {get: () => undefined})")
 
-#Inicialização pagina
+# Inicialização pagina
 browser.maximize_window()
 browser.get("https://www.saucedemo.com/")
 
-#Pagina Login
+# Pagina Login
 browser.find_element(By.ID, "user-name").send_keys("standard_user")
 time.sleep(1)
 browser.find_element(By.ID, "password").send_keys("secret_sauce")
@@ -30,7 +30,7 @@ time.sleep(1)
 browser.find_element(By.ID, "login-button").click()
 time.sleep(1)
 
-# Pagina do e-commerce
+# Página do ‘e-commerce’
 df = pd.read_csv("dados-cliente.csv")
 for index, row in df.iterrows():
     WebDriverWait(browser, 60).until(ec.visibility_of_element_located((By.XPATH, "//span[@class='title']")))
@@ -41,7 +41,7 @@ for index, row in df.iterrows():
     browser.find_element(By.XPATH, "//a[@class='shopping_cart_link']").click()
     time.sleep(2)
 
-    #Pagina carrinho
+    # Pagina carrinho
     WebDriverWait(browser, 60).until(ec.visibility_of_element_located((By.XPATH, "//span[@class='title']")))
     time.sleep(2)
     browser.execute_script("window.scrollBy(0,100)", "")
@@ -49,7 +49,7 @@ for index, row in df.iterrows():
     browser.find_element(By.ID, "checkout").click()
     time.sleep(2)
 
-    #Pagina de CheckOut
+    # Pagina de CheckOut
     browser.execute_script("window.scrollBy(0,-100)", "")
     time.sleep(1)
     browser.find_element(By.ID, "first-name").send_keys(df.loc[index, 'First Name'])
@@ -64,9 +64,11 @@ for index, row in df.iterrows():
     browser.find_element(By.ID, "continue").click()
     time.sleep(2)
 
-    #Pagina de Finalização
+    # Página de Finalização
     browser.execute_script("window.scrollBy(0,250)", "")
     time.sleep(1)
+    elemento = browser.find_element("//div[@class='summary_info_label summary_total_label']/text()")
+    print(elemento)
     browser.find_element(By.ID, "finish").click()
     time.sleep(5)
     browser.find_element(By.ID, "back-to-products").click()
